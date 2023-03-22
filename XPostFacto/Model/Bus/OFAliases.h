@@ -62,7 +62,7 @@ class OFAliases {
 	public:
 	
 		static void AliasFor (const REG_ENTRY_TYPE regEntry, char *outAlias, char *shortAlias);
-		static bool MatchAliases (const char *path, const char *ofName);
+		static bool MatchAliases (const char *path, const char *ofName, bool withArguments = true);
 
 		~OFAliases ();
 		
@@ -74,7 +74,7 @@ class OFAliases {
 		static void Initialize ();
 
 		void aliasFor (const REG_ENTRY_TYPE regEntry, char *outAlias, char *shortAlias);
-		bool matchAliases (const char *path, const char *ofName);
+		bool matchAliases (const char *path, const char *ofName, bool withArguments = true);
 		void expandAlias (const char *original, char *expanded);
 		
 		AliasEntry* aliasEntryForKey (char *key);

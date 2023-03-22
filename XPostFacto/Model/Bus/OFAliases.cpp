@@ -70,7 +70,7 @@ class RegEntryLevel {
 
 	public:
 		RegEntryLevel (char *level);	
-		bool matchWith (RegEntryLevel *other);
+		bool matchWith (RegEntryLevel *other, bool withArguments = true);
 	
 	private:
 
@@ -104,14 +104,14 @@ RegEntryLevel::RegEntryLevel (char *level)
 }
 	
 bool 
-RegEntryLevel::matchWith (RegEntryLevel *other) 
+RegEntryLevel::matchWith (RegEntryLevel *other, bool withArguments)
 {
 	if (fUnitSpecified && other->fUnitSpecified) {
 		// If both specified the unit, then the unit needs to match. And we don't
 		// care whether the name matches, as the name is sometimes spurious (for instance,
 		// part of the name of Firewire devices). Also, note that when only parts of the unit
 		// are specified, the rest default to 0, which is not entirely perfect, but should work.
-		return ((fUnit == other->fUnit) && (fFunction == other->fFunction) && (fArgument == other->fArgument));
+		return ((fUnit == other->fUnit) && (fFunction == other->fFunction) && (!withArguments || fArgument == other->fArgument));
 	}
 	// If one of them didn't specify a unit, then basically we need to just compare names.
 	// This isn't entirely ideal, but it's the best we can do. Assuming that both were well-formed,
@@ -355,7 +355,7 @@ OFAliases::expandAlias (const char *original, char *expanded)
 }
 
 bool
-OFAliases::matchAliases (const char *alias1, const char *alias2)
+OFAliases::matchAliases (const char *alias1, const char *alias2, bool withArguments)
 {
 	// First, we expand any aliases so that we don't get confused by having
 	// used different aliases to construct things.
@@ -381,7 +381,7 @@ OFAliases::matchAliases (const char *alias1, const char *alias2)
 		RegEntryLevel level1 (start1);
 		RegEntryLevel level2 (start2);
 		
-		if (!level1.matchWith (&level2)) return false;  // a level didn't match
+		if (!level1.matchWith (&level2, withArguments)) return false;  // a level didn't match
 		
 		start1 += strlen (start1) + 1;
 		start2 += strlen (start2) + 1;
@@ -393,10 +393,10 @@ OFAliases::matchAliases (const char *alias1, const char *alias2)
 }
 
 bool 
-OFAliases::MatchAliases (const char *alias1, const char *alias2)
+OFAliases::MatchAliases (const char *alias1, const char *alias2, bool withArguments)
 {
 	Initialize ();
-	return sOFAliases->matchAliases (alias1, alias2);
+	return sOFAliases->matchAliases (alias1, alias2, withArguments);
 }
 
 void
