@@ -86,7 +86,7 @@ enum {
 	kDeletingXPFCache,
 	kCheckingPermissions,
 	kXPostFactoRegisterMenu,
-	kCPUNotSupported,
+	kCPUG3Required,
 	kNotInstalled,				// 50
 	kFewerPartitionsThanExpected,
 	kInvalidSymlinks,
@@ -97,15 +97,19 @@ enum {
 	k8GBWarning,
 	kRequiresInstallation,
 	kNoPartitionNumber,
-	kUsingNonDefaultBus,
-	kXPostFactoName,			// 60
+	kUsingNonDefaultBus,		// 60
+	kXPostFactoName,
 	kSaveCurrentLog,
 	kXPostFactoLog,
 	kNotInitialized,
-	kExtensionsCacheInvalid,
-	kNotSufficientRAM,			// 65
+	kExtensionsCacheInvalid,	// 65
+	kNotSufficientRAM,
 	kNoMacOS9SystemFolder,
 	kRequiresTenPointTwo,
+	kCPUPPC603Required,
+	kCPUG4Required,				// 70
+	kCPUIntelRequired,
+	kNoHFSWrapperNote,
 };
 
 

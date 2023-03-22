@@ -114,7 +114,7 @@ XPFVolumeDisplay::DoPostCreate(TDocument* itsDocument)
 	fIcon = (TIcon *) this->FindSubView ('icon');
 	fStatus = (TStaticText *) this->FindSubView ('vols');
 	
-	fWarningIcon = (TIcon *) this->FindSubView ('warn');
+	fWarningIcon = (XPFWarningIcon *) this->FindSubView ('warn');
 }
 
 void 
@@ -213,16 +213,27 @@ XPFVolumeDisplay::updateActiveState ()
 	unsigned bootStatus = fVolume->getBootStatus ();
 	unsigned targetStatus = fVolume->getInstallTargetStatus ();
 	unsigned installerStatus = fVolume->getInstallerStatus ();
+	short bootWarnings[20];
+	short bootNotes[10];
 
 	if (fPrefs->getRebootInMacOS9 ()) {
 		SetActiveState (fVolume->getMacOS9BootStatus() == kStatusOK, false);
 		fWarningIcon->Show (false, true);
-	} else if (fPrefs->getInstallCD ()) {
-		SetActiveState ((installerStatus == kStatusOK) || (bootStatus == kStatusOK) || (targetStatus == kStatusOK), false);
-		fWarningIcon->Show (fVolume->getBootWarning (true), true);
 	} else {
-		SetActiveState ((installerStatus == kStatusOK) || (bootStatus == kStatusOK), false);			
-		fWarningIcon->Show (fVolume->getBootWarning (false), true);
+		if (fPrefs->getInstallCD ()) {
+			SetActiveState ((installerStatus == kStatusOK) || (bootStatus == kStatusOK) || (targetStatus == kStatusOK), false);
+			fVolume->getBootWarnings (true, bootWarnings, bootNotes);
+		} else {
+			SetActiveState ((installerStatus == kStatusOK) || (bootStatus == kStatusOK), false);
+			fVolume->getBootWarnings (false, bootWarnings, bootNotes);
+		}
+		if (bootWarnings[0] || bootNotes[0]) {
+			fWarningIcon->SetSystemIcon(bootWarnings[0] ? kAlertCautionIcon : kAlertNoteIcon);
+			fWarningIcon->Show (true, true);
+		}
+		else {
+			fWarningIcon->Show (false, true);
+		}
 	}	
 }
 

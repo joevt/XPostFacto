@@ -82,12 +82,17 @@ class XPFWarningIcon : public TIcon {
 
 public:
 
+	XPFWarningIcon ();
 	virtual ~XPFWarningIcon ();
 	virtual void DoPostCreate (TDocument *itsDocument);
+	virtual void SetSystemIcon (OSType iconType);
 	
 private:
 
-	static IconRef gIconRef;
+	static IconRef gCautionIconRef;
+	static IconRef gNoteIconRef;
+	static IconRef gStopIconRef;
+	IconRef fCurrentIconRef;
 
 };
 

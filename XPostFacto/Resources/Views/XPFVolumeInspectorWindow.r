@@ -37,7 +37,7 @@ resource 'View' (1110, "Volume Inspector", purgeable) {
 			},
 			{	/* array: 2 elements */
 				/* [1] */
-				452,
+				468,
 				/* [2] */
 				420
 			},
@@ -99,7 +99,7 @@ resource 'View' (1110, "Volume Inspector", purgeable) {
 				generateActivates,
 				filler,
 				1110,
-				1
+				17
 			},
 			21
 		},
@@ -167,7 +167,7 @@ resource 'View' (1110, "Volume Inspector", purgeable) {
 				dontEraseFirst,
 				justSystem,
 				1110,
-				2
+				1
 			},
 			NoSubviews
 		},
@@ -235,7 +235,7 @@ resource 'View' (1110, "Volume Inspector", purgeable) {
 				dontEraseFirst,
 				justRight,
 				1110,
-				3
+				2
 			},
 			NoSubviews
 		},
@@ -303,7 +303,7 @@ resource 'View' (1110, "Volume Inspector", purgeable) {
 				dontEraseFirst,
 				justRight,
 				1110,
-				4
+				3
 			},
 			NoSubviews
 		},
@@ -328,7 +328,7 @@ resource 'View' (1110, "Volume Inspector", purgeable) {
 			},
 			{	/* array: 2 elements */
 				/* [1] */
-				32,
+				48,
 				/* [2] */
 				200
 			},
@@ -371,7 +371,7 @@ resource 'View' (1110, "Volume Inspector", purgeable) {
 				dontEraseFirst,
 				justSystem,
 				1110,
-				5
+				4
 			},
 			NoSubviews
 		},
@@ -390,7 +390,7 @@ resource 'View' (1110, "Volume Inspector", purgeable) {
 			},
 			{	/* array: 2 elements */
 				/* [1] */
-				148,
+				164,
 				/* [2] */
 				20
 			},
@@ -439,7 +439,7 @@ resource 'View' (1110, "Volume Inspector", purgeable) {
 				dontEraseFirst,
 				justRight,
 				1110,
-				6
+				5
 			},
 			NoSubviews
 		},
@@ -458,7 +458,7 @@ resource 'View' (1110, "Volume Inspector", purgeable) {
 			},
 			{	/* array: 2 elements */
 				/* [1] */
-				148,
+				164,
 				/* [2] */
 				190
 			},
@@ -507,7 +507,7 @@ resource 'View' (1110, "Volume Inspector", purgeable) {
 				dontEraseFirst,
 				justSystem,
 				1110,
-				7
+				6
 			},
 			NoSubviews
 		},
@@ -526,7 +526,7 @@ resource 'View' (1110, "Volume Inspector", purgeable) {
 			},
 			{	/* array: 2 elements */
 				/* [1] */
-				172,
+				188,
 				/* [2] */
 				20
 			},
@@ -575,7 +575,7 @@ resource 'View' (1110, "Volume Inspector", purgeable) {
 				dontEraseFirst,
 				justRight,
 				1110,
-				8
+				7
 			},
 			NoSubviews
 		},
@@ -594,7 +594,7 @@ resource 'View' (1110, "Volume Inspector", purgeable) {
 			},
 			{	/* array: 2 elements */
 				/* [1] */
-				172,
+				188,
 				/* [2] */
 				190
 			},
@@ -643,7 +643,7 @@ resource 'View' (1110, "Volume Inspector", purgeable) {
 				dontEraseFirst,
 				justSystem,
 				1110,
-				9
+				8
 			},
 			NoSubviews
 		},
@@ -662,7 +662,7 @@ resource 'View' (1110, "Volume Inspector", purgeable) {
 			},
 			{	/* array: 2 elements */
 				/* [1] */
-				196,
+				212,
 				/* [2] */
 				20
 			},
@@ -711,7 +711,7 @@ resource 'View' (1110, "Volume Inspector", purgeable) {
 				dontEraseFirst,
 				justRight,
 				1110,
-				10
+				9
 			},
 			NoSubviews
 		},
@@ -730,7 +730,7 @@ resource 'View' (1110, "Volume Inspector", purgeable) {
 			},
 			{	/* array: 2 elements */
 				/* [1] */
-				196,
+				212,
 				/* [2] */
 				190
 			},
@@ -779,7 +779,7 @@ resource 'View' (1110, "Volume Inspector", purgeable) {
 				dontEraseFirst,
 				justSystem,
 				1110,
-				11
+				10
 			},
 			NoSubviews
 		},
@@ -798,7 +798,7 @@ resource 'View' (1110, "Volume Inspector", purgeable) {
 			},
 			{	/* array: 2 elements */
 				/* [1] */
-				220,
+				236,
 				/* [2] */
 				20
 			},
@@ -847,7 +847,7 @@ resource 'View' (1110, "Volume Inspector", purgeable) {
 				dontEraseFirst,
 				justRight,
 				1110,
-				12
+				11
 			},
 			NoSubviews
 		},
@@ -866,7 +866,7 @@ resource 'View' (1110, "Volume Inspector", purgeable) {
 			},
 			{	/* array: 2 elements */
 				/* [1] */
-				220,
+				236,
 				/* [2] */
 				190
 			},
@@ -915,7 +915,7 @@ resource 'View' (1110, "Volume Inspector", purgeable) {
 				dontEraseFirst,
 				justSystem,
 				1110,
-				13
+				12
 			},
 			NoSubviews
 		},
@@ -934,7 +934,7 @@ resource 'View' (1110, "Volume Inspector", purgeable) {
 			},
 			{	/* array: 2 elements */
 				/* [1] */
-				248,
+				264,
 				/* [2] */
 				20
 			},
@@ -983,7 +983,7 @@ resource 'View' (1110, "Volume Inspector", purgeable) {
 				dontEraseFirst,
 				justRight,
 				1110,
-				16
+				13
 			},
 			NoSubviews
 		},
@@ -1002,9 +1002,9 @@ resource 'View' (1110, "Volume Inspector", purgeable) {
 			},
 			{	/* array: 2 elements */
 				/* [1] */
-				278,
+				294,
 				/* [2] */
-				150
+				20
 			},
 			{	/* array: 2 elements */
 				/* [1] */
@@ -1067,15 +1067,15 @@ resource 'View' (1110, "Volume Inspector", purgeable) {
 			},
 			{	/* array: 2 elements */
 				/* [1] */
-				278,
+				294,
 				/* [2] */
-				190
+				60
 			},
 			{	/* array: 2 elements */
 				/* [1] */
 				134,
 				/* [2] */
-				200
+				330
 			},
 			sizeVariable,
 			sizeVariable,
@@ -1116,7 +1116,7 @@ resource 'View' (1110, "Volume Inspector", purgeable) {
 				dontEraseFirst,
 				justSystem,
 				1110,
-				17
+				14
 			},
 			NoSubviews
 		},
@@ -1232,7 +1232,7 @@ resource 'View' (1110, "Volume Inspector", purgeable) {
 				dontEraseFirst,
 				justRight,
 				1110,
-				18
+				15
 			},
 			NoSubviews
 		},
@@ -1251,7 +1251,7 @@ resource 'View' (1110, "Volume Inspector", purgeable) {
 			},
 			{	/* array: 2 elements */
 				/* [1] */
-				416,
+				432,
 				/* [2] */
 				366
 			},
@@ -1298,7 +1298,7 @@ resource 'View' (1110, "Volume Inspector", purgeable) {
 				dontPreferOutline,
 				off,
 				1110,
-				19
+				16
 			},
 			NoSubviews
 		},
@@ -1557,7 +1557,7 @@ resource 'View' (1110, "Volume Inspector", purgeable) {
 			},
 			{	/* array: 2 elements */
 				/* [1] */
-				246,
+				262,
 				/* [2] */
 				190
 			},
@@ -1666,45 +1666,41 @@ resource 'View' (1110, "Volume Inspector", purgeable) {
 };
 
 resource 'STR#' (1110, "Volume Inspector", purgeable) {
-	{	/* array StringArray: 19 elements */
+	{	/* array StringArray: 17 elements */
 		/* [1] */
-		"Volume Inspector",
-		/* [2] */
 		"Volume name",
-		/* [3] */
+		/* [2] */
 		"Volume Name:",
-		/* [4] */
+		/* [3] */
 		"Open Firmware Name:",
-		/* [5] */
+		/* [4] */
 		"Open Firmware Name",
-		/* [6] */
+		/* [5] */
 		"Mac OS X Version:",
-		/* [7] */
+		/* [6] */
 		"Mac OS X Version",
-		/* [8] */
+		/* [7] */
 		"BootX Version:",
-		/* [9] */
+		/* [8] */
 		"BootX Version",
-		/* [10] */
+		/* [9] */
 		"Mac OS 9 System Folder ID:",
-		/* [11] */
+		/* [10] */
 		"Mac OS 9 System Folder",
-		/* [12] */
+		/* [11] */
 		"Blessed Folder ID:",
-		/* [13] */
+		/* [12] */
 		"Blessed Folder ID",
-		/* [14] */
-		"Help:",
-		/* [15] */
-		" ",
-		/* [16] */
+		/* [13] */
 		"Helper:",
-		/* [17] */
+		/* [14] */
 		"Warning Text",
-		/* [18] */
+		/* [15] */
 		"Bus:",
-		/* [19] */
-		"?"
+		/* [16] */
+		"?",
+		/* [17] */
+		"Volume Inspector"
 	}
 };
 

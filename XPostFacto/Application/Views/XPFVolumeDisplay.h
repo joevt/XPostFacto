@@ -40,6 +40,7 @@ advised of the possibility of such damage.
 
 #include "UView.h"
 #include "UIcon.h"
+#include "XPFWarnings.h"
 
 class XPFApplication;
 class XPFPrefs;
@@ -81,7 +82,7 @@ private:
 	TStaticText *fStatus;
 	TIcon *fIcon;
 	IconRef fIconRef;
-	TIcon *fWarningIcon;
+	XPFWarningIcon *fWarningIcon;
 
 };
 

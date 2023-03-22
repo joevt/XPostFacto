@@ -122,28 +122,57 @@ XPFRestartWarning::DoUpdate (ChangeID_AC theChange,
 
 MA_DEFINE_CLASS (XPFWarningIcon);
 
-IconRef XPFWarningIcon::gIconRef = NULL;
+IconRef XPFWarningIcon::gCautionIconRef = NULL;
+IconRef XPFWarningIcon::gNoteIconRef = NULL;
+IconRef XPFWarningIcon::gStopIconRef = NULL;
+
+XPFWarningIcon::XPFWarningIcon ()
+{
+	fCurrentIconRef = NULL;
+}
 
 XPFWarningIcon::~XPFWarningIcon ()
 {
-	if (gIconRef) ReleaseIconRef (gIconRef);
+	if (fCurrentIconRef) {
+		ReleaseIconRef (fCurrentIconRef);
+		fCurrentIconRef = NULL;
+	}
 }
 
 void 
 XPFWarningIcon::DoPostCreate (TDocument* itsDocument)
 {
 	Inherited::DoPostCreate (itsDocument);
+	
+	SetSystemIcon (kAlertCautionIcon);
+}
 
-	if (gIconRef) {
-		AcquireIconRef (gIconRef);
-	} else {
-		GetIconRef (kOnSystemDisk, kSystemIconsCreator, kAlertCautionIcon, &gIconRef);
+void
+XPFWarningIcon::SetSystemIcon (OSType iconType)
+{
+	if (fCurrentIconRef) {
+		ReleaseIconRef (fCurrentIconRef);
+		fCurrentIconRef = NULL;
 	}
+	
+	IconRef *theIconRef = &fCurrentIconRef;
+	switch (iconType) {
+		kAlertNoteIcon    : theIconRef = &gNoteIconRef   ; break;
+		kAlertCautionIcon : theIconRef = &gCautionIconRef; break;
+		kAlertStopIcon    : theIconRef = &gStopIconRef   ; break;
+	}
+	
+	if (*theIconRef) {
+		AcquireIconRef (*theIconRef);
+	} else {
+		GetIconRef (kOnSystemDisk, kSystemIconsCreator, iconType, theIconRef);
+	}
+	fCurrentIconRef = *theIconRef;
 
-	if (gIconRef) {
+	if (fCurrentIconRef) {
 		IconFamilyHandle familyHandle;
 		IconSuiteRef iconSuite;
-		OSErr err = IconRefToIconFamily (gIconRef, kSelectorAllAvailableData, &familyHandle);
+		OSErr err = IconRefToIconFamily (fCurrentIconRef, kSelectorAllAvailableData, &familyHandle);
 		if (err == noErr) err = IconFamilyToIconSuite (familyHandle, kSelectorAllAvailableData, &iconSuite);
 		if (err == noErr) SetIconSuite (iconSuite);
 	}

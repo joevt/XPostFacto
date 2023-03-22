@@ -97,7 +97,7 @@ XPFVolumeInspectorWindow::DoPostCreate(TDocument* itsDocument)
 	fMacOS9FolderID = dynamic_cast_or_throw_AC (TStaticText*, this->FindSubView ('mos9'));
 	fBlessedFolderID = dynamic_cast_or_throw_AC (TStaticText*, this->FindSubView ('blsf'));
 
-	fWarningIcon = dynamic_cast_or_throw_AC (TIcon*, this->FindSubView ('warn'));
+	fWarningIcon = dynamic_cast_or_throw_AC (XPFWarningIcon*, this->FindSubView ('warn'));
 	fWarningText = dynamic_cast_or_throw_AC (TStaticText*, this->FindSubView ('wart'));
 	
 	fPrefs = ((XPFApplication *) gApplication)->getPrefs ();
@@ -153,10 +153,24 @@ XPFVolumeInspectorWindow::updateFields ()
 	sprintf (buffer, "%lu", fVolume->getBlessedFolderID ());
 	fBlessedFolderID->SetText (buffer, true);
 	
-	UInt32 warning = fVolume->getBootWarning (fPrefs->getInstallCD ());
-	if (warning && !fPrefs->getRebootInMacOS9 ()) {
+	short bootWarnings[20];
+	short bootNotes[10];
+	fVolume->getBootWarnings (fPrefs->getInstallCD (), bootWarnings, bootNotes);
+	if ((bootWarnings[0] || bootNotes[0]) && !fPrefs->getRebootInMacOS9 ()) {
+		fWarningIcon->SetSystemIcon(bootWarnings[0] ? kAlertCautionIcon : kAlertNoteIcon);
 		fWarningIcon->Show (true, true);
-		fWarningText->SetTextWithStrListID (kXPFStringsResource, warning, true);
+		CString_AC warningText;
+		for (short *warning = bootWarnings; *warning; warning++) {
+			warningText += "- ";
+			warningText += CString_AC(kXPFStringsResource, *warning);
+			warningText += "\n";
+		}
+		for (short *note = bootNotes; *note; note++) {
+			warningText += "- ";
+			warningText += CString_AC(kXPFStringsResource, *note);
+			warningText += "\n";
+		}
+		fWarningText->SetText (warningText, true);
 	} else {
 		fWarningIcon->Show (false, true);
 		fWarningText->SetText ("", true);

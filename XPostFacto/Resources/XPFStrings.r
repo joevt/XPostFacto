@@ -96,7 +96,7 @@ resource 'STR#' (kXPFStringsResource, purgeable) {
 			
 			"Register XPostFacto";
 			
-			"G3/G4 CPU upgrade required";
+			"G3/G4 CPU upgrade required.";
 			
 /* 50 */	"Not installed";
 
@@ -107,7 +107,7 @@ resource 'STR#' (kXPFStringsResource, purgeable) {
 			"The symbolic links /etc, /tmp, or /var are either missing or corrupted. "
 			"You can attempt to fix this with the 'Fix Symbolic Links' command in the 'Install' menu.";
 
-			"The symbolic links /etc, /tmp, or /var are either missing or corrupted. ";
+			"The symbolic links /etc, /tmp, or /var are either missing or corrupted.";
 				
 			"Fixing symbolic links";
 			
@@ -141,5 +141,13 @@ resource 'STR#' (kXPFStringsResource, purgeable) {
 			"No Mac OS 9 System Folder.";
 			
 			"XPF 4 requires 10.2 or later.";
+
+			"PPC 603/604 or later CPU required.";
+
+/* 70 */	"G4 CPU upgrade required.";
+
+			"Intel CPU required.";
+			
+			"This HFS+ volume has no HFS wrapper but that's ok for New World Macs.";
 	}
 };

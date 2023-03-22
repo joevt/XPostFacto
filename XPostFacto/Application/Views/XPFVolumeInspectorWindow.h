@@ -39,6 +39,8 @@ advised of the possibility of such damage.
 #define __XPFVOLUMEINSPECTORWINDOW_H__
 
 #include "UWindow.h"
+#include "XPFWarnings.h"
+
 
 class MountedVolume;
 class XPFPrefs;
@@ -81,7 +83,7 @@ private:
 	TStaticText *fMacOS9FolderID;
 	TStaticText *fBlessedFolderID;
 	
-	TIcon *fWarningIcon;
+	XPFWarningIcon *fWarningIcon;
 	TStaticText *fWarningText;
 	
 };

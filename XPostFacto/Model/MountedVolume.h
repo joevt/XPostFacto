@@ -87,7 +87,7 @@ class MountedVolume : public MDependable_AC
 		bool getIsHFSPlus () {return fIsHFSPlus;}
 		bool getExtendsPastEightGB ();
 		XPFBootableDevice* getBootableDevice () {return fBootableDevice;}
-		bool getWillRunOnCurrentCPU ();
+		short getNeedsCPUUpgrade ();
 		bool getRequiresBootHelper ();
 		bool getHasMachKernel () {return fHasMachKernel;}
 		bool getHasInstaller () {return fHasInstaller;}
@@ -117,7 +117,7 @@ class MountedVolume : public MDependable_AC
 		unsigned getInstallerStatus ();
 		unsigned getInstallTargetStatus ();
 		unsigned getHelperStatus ();
-		unsigned getBootWarning (bool forInstall = false);
+		void getBootWarnings (bool forInstall, short *bootWarnings, short *bootNotes);
 		unsigned getSymlinkStatus () {return fSymlinkStatus;}
 		unsigned getMacOS9BootStatus ();
 		

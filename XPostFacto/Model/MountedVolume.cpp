@@ -48,6 +48,7 @@ advised of the possibility of such damage.
 	#include <UnicodeConverter.h>
 	#include <AppleDiskPartitions.h>
 	#include <Sound.h>
+	#include <MachineExceptions.h>
 #endif
 
 #ifdef BUILDING_XPF
@@ -62,6 +63,7 @@ advised of the possibility of such damage.
 #include "XCOFFDecoder.h"
 #include "XPFPlatform.h"
 #include "FastUnicodeCompare.h"
+#include "CPUDevice.h"
 
 #include <iostream.h>
 #include "XPostFacto.h"
@@ -1492,32 +1494,120 @@ MountedVolume::getRequiresBootHelper ()
 	return fBootableDevice->getNeedsHelper () || !getIsWriteable ();
 }
 
-bool
-MountedVolume::getWillRunOnCurrentCPU ()
+enum {
+#ifndef __MACH__
+	gestaltCPU750FX               = 0x0120, /* Sahara,G3 like thing */
+	gestaltCPUApollo              = 0x0111, /* Apollo , Altivec, G4 7455 */
+#endif
+	gestaltCPUG47447              = 0x0112,
+	gestaltCPU970                 = 0x0139, /* G5 */
+	gestaltCPU970FX               = 0x013C, /* another G5 */
+	gestaltCPU970MP               = 0x0144
+};
+
+short
+MountedVolume::getNeedsCPUUpgrade ()
 {
-	if (!fMacOSXMajorVersion) return true;
+	if (!fMacOSXMajorVersion)
+		return 0; // there's no Mac OS X version to compare
 
-	bool retVal = true;
+	short retVal = 0;
 
-	long cpuType;
-	if (Gestalt (gestaltNativeCPUtype, &cpuType) == noErr) {
-		switch (cpuType) {
-			case gestaltCPU601:
-				retVal = false;
-				break;
-				
-			case gestaltCPU603:
-			case gestaltCPU604:
-			case gestaltCPU603e:
-			case gestaltCPU603ev:
-			case gestaltCPU604e:
-			case gestaltCPU604ev:
-				retVal = fMacOSXMajorVersion < 7; 
-				break;
-		}
+	/*
+		There are six CPU groups that we care about which we relate to versions of Mac OS X.
+		Each group is a warning message from XPFStrings.h and XPFStrings.r .
+	*/
+	short requiredCPUs[] = { 0, kCPUPPC603Required, kCPUG3Required, kCPUG4Required, kCPUG4Required /* G5 */, kCPUIntelRequired };
+
+	int requiredCPU;
+	switch (fMacOSXMajorVersion) {
+		case 0:
+			requiredCPU = 0; break;
+		case 1: // Developer preview 3/4, Public Beta, 10.0 Cheetah, 10.1 Puma
+		case 2: // 
+		case 3: // 
+		case 4: // 
+		case 5: // 10.1.1 Puma
+		case 6: // 10.2 Jaguar
+		case 7: // 10.3 Panther
+			requiredCPU = 1; break;
+		case 8: // 10.4 Tiger
+			requiredCPU = 2; break;
+		case 9: // 10.5 Leopard
+			requiredCPU = 3; break;
+		default: // 10.6 Snow Leopard and later
+			requiredCPU = 5; break;
+	}
+
+
+	long cpuType = 0;
+	// Mac OS 9 Gestalt doesn't return G3 or G4 in upgraded 8600 so we need to check pvr.
+	
+	UInt32 processorVersion = 0;
+	CPUDevice *cpu = CPUDevice::CPUWithNumber (0);
+	if (cpu) processorVersion = cpu->fCPUVersion;
+	
+	// InstallExceptionHandler(prevHandler);
+
+	switch (processorVersion >> 16) {
+		case      1: cpuType = gestaltCPU601    ; break;
+		case      3: cpuType = gestaltCPU603    ; break;
+		case      6: cpuType = gestaltCPU603e   ; break;
+		case      7: cpuType = gestaltCPU603ev  ; break;
+		case      4: cpuType = gestaltCPU604    ; break;
+		case      9: cpuType = gestaltCPU604e   ; break;
+		case      8: cpuType = gestaltCPU750    ; break;
+		case 0x7000: cpuType = gestaltCPU750FX  ; break;
+		case    0xc:
+		case 0x800c: 
+		case 0x8001: cpuType = gestaltCPUG4     ; break;
+		case 0x8000: cpuType = gestaltCPUG47450 ; break;
+		case 0x8002:
+		case 0x8003: cpuType = gestaltCPUG47447 ; break;
+		case 0x0039: cpuType = gestaltCPU970    ; break;
+		case 0x003c: cpuType = gestaltCPU970FX  ; break;
+		default: Gestalt (gestaltNativeCPUtype, &cpuType);
+	}
+
+	int CPU = 0;
+	switch (cpuType) {
+		case gestaltCPU601:
+			CPU = 0; break;
+
+		case gestaltCPU603:
+		case gestaltCPU604:
+		case gestaltCPU603e:
+		case gestaltCPU603ev:
+		case gestaltCPU604e:
+		case gestaltCPU604ev:
+			CPU = 1; break;
+
+		case gestaltCPU750:
+		case gestaltCPU750FX:
+			CPU = 2; break;
+
+		case gestaltCPUG4:
+		case gestaltCPUG47450:
+		case gestaltCPUApollo:
+			CPU = 3; break;
+
+		case gestaltCPU970:
+		case gestaltCPU970FX:
+		case gestaltCPU970MP:
+			CPU = 4; break;
 	}
 	
-	if (!retVal) gLogFile << "Gestalt gestaltNativeCPUType: " << cpuType << endl_AC;
+	if (CPU < requiredCPU) {
+		retVal = requiredCPUs[requiredCPU];
+	}
+
+	static bool didLog = false;
+	if (!didLog) {
+		gLogFile << "Gestalt gestaltNativeCPUType: " << cpuType << endl_AC;
+		gLogFile << "CPU type: " << CPU << endl_AC;
+		didLog = true;
+	}
+	//gLogFile << "Required CPU type: " << requiredCPU << endl_AC;
 	
 	return retVal;
 }
@@ -1564,37 +1654,46 @@ MountedVolume::getMacOS9BootStatus ()
 	return kStatusOK;
 }
 
-unsigned
-MountedVolume::getBootWarning (bool forInstall)
+void
+MountedVolume::getBootWarnings (bool forInstall, short *bootWarnings, short *bootNotes)
 {
 	MountedVolume *bootDisk = getHelperDisk ();
 	if (!bootDisk) bootDisk = this;
 	MountedVolume *rootDisk = this;
 		
-	if (!rootDisk->fExtensionCachesOK) return kExtensionsCacheInvalid;
+	if (!rootDisk->fExtensionCachesOK) *bootWarnings++ = kExtensionsCacheInvalid;
 
-	if (rootDisk->fSymlinkStatus == kSymlinkStatusCannotFix) return kInvalidSymlinksCannotFix;
-	if (rootDisk->fSymlinkStatus != kSymlinkStatusOK) return kInvalidSymlinks;
+	if (rootDisk->fSymlinkStatus == kSymlinkStatusCannotFix) *bootWarnings++ = kInvalidSymlinksCannotFix;
+	if (rootDisk->fSymlinkStatus != kSymlinkStatusOK) *bootWarnings++ = kInvalidSymlinks;
 
-	if (!rootDisk->getWillRunOnCurrentCPU ()) return kCPUNotSupported;
+	short needsCPUUpgrade = rootDisk->getNeedsCPUUpgrade ();
+	if (needsCPUUpgrade) *bootWarnings++ = needsCPUUpgrade;
 
 	XPFBootableDevice *bootDevice = bootDisk->getBootableDevice ();
-	if (!bootDevice) return kNotBootable;
+	if (!bootDevice) {
+		*bootWarnings++ = kNotBootable;
+	} else {
+		XPFPartition* firstPart = bootDevice->getFirstHFSPartition ();
+		if (firstPart && firstPart->getPartitionNumber () < kExpectedFirstHFSPartition) *bootWarnings++ = kFewerPartitionsThanExpected;
 
-	XPFPartition* firstPart = bootDevice->getFirstHFSPartition ();
-	if (firstPart && firstPart->getPartitionNumber () < kExpectedFirstHFSPartition) return kFewerPartitionsThanExpected;
-	if (bootDisk->fPartition && !bootDisk->fPartition->getHasHFSWrapper ()) return kNoHFSWrapper;
+		if (bootDevice->isReallyATADevice () && 
+			bootDisk->getExtendsPastEightGB () && 
+			!XPFPlatform::GetPlatform()->getIsNewWorld() &&
+			!bootDisk->fIsAttachedToPCICard
+		) *bootWarnings++ = k8GBWarning;
+	}
+	if (bootDisk->fPartition && !bootDisk->fPartition->getHasHFSWrapper ())
+		if (XPFPlatform::GetPlatform()->getIsNewWorld())
+			*bootNotes++ = kNoHFSWrapperNote;
+		else
+			*bootWarnings++ = kNoHFSWrapper;
 
-	if (bootDevice->isReallyATADevice () && 
-		bootDisk->getExtendsPastEightGB () && 
-		!XPFPlatform::GetPlatform()->getIsNewWorld() &&
-		!bootDisk->fIsAttachedToPCICard
-	) return k8GBWarning;
-		
-	if (bootDisk->getBus () != bootDisk->getDefaultBus ()) return kUsingNonDefaultBus;
-	if (rootDisk->getBus () != rootDisk->getDefaultBus ()) return kUsingNonDefaultBus;
+	if (bootDisk->getBus () != bootDisk->getDefaultBus () ||
+		rootDisk->getBus () != rootDisk->getDefaultBus ()
+	) *bootWarnings++ = kUsingNonDefaultBus;
 	
-	return kStatusOK;
+	*bootWarnings++ = 0;
+	*bootNotes++ = 0;
 }
 
 unsigned
